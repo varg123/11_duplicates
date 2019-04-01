@@ -1,7 +1,26 @@
-# Anti-Duplicator
+# Анти-Дубликатор
 
-[TODO. There will be project description]
+Ищет копии файлов в указанной папке. Файлы считаются копиями, если имеют одинаковые имя и размер.
 
-# Project Goals
+# Как запустить
 
-The code is written for educational purposes. Training course for web-developers - [DEVMAN.org](https://devman.org)
+Скрипт требует для своей работы установленного интерпретатора Python версии 3.5.
+Для работы скрипта обязательно указывается путь к сканируемой папке через флаг `-d`. Путь может быть как относительный, так и абсолютный.
+
+Пример на Linux:
+
+```bash
+
+$ python duplicates.py -d ..\Сканируемая_папка
+
+Имя: файл1.txt
+Размер: 3944
+Расположение дубликатов:
+C:\Users\Andrey\Desktop\Сканируемая_папка\Папка\файл1.txt
+C:\Users\Andrey\Desktop\Сканируемая_папка\файл1.txt
+
+```
+
+# Цели проекта
+
+Код создан в учебных целях. В рамках учебного курса по веб-разработке - [DEVMAN.org](https://devman.org)
