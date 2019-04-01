@@ -19,17 +19,17 @@ def parse_dir_arg():
 
 def scran_dir(data_files, start_directory):
     all_names_in_dir = listdir(start_directory)
-    for name in all_names_in_dir:
-        name_full = start_directory+'\\'+name
-        if isfile(name_full):
-            file_size = getsize(name_full)
-            if data_files.get((name, file_size)):
-                data_files[(name, file_size)].append(name_full)
+    for name_obj in all_names_in_dir:
+        name_obj_full = start_directory+'\\'+name_obj
+        if isfile(name_obj_full):
+            file_size = getsize(name_obj_full)
+            if data_files.get((name_obj, file_size)):
+                data_files[(name_obj, file_size)].append(name_obj_full)
             else:
-                data_files[(name, file_size)] = []
-                data_files[(name, file_size)].append(name_full)
-        if isdir(name_full):
-            scran_dir(data_files, name_full)
+                data_files[(name_obj, file_size)] = []
+                data_files[(name_obj, file_size)].append(name_obj_full)
+        if isdir(name_obj_full):
+            scran_dir(data_files, name_obj_full)
     return data_files
 
 
