@@ -1,5 +1,5 @@
 from os import listdir
-from os.path import getsize, isfile, isdir, abspath
+from os.path import getsize, isfile, isdir, abspath, join
 import argparse
 
 MAX_COUNT_FILES = 1
@@ -20,7 +20,7 @@ def parse_dir_arg():
 def scran_dir(data_files, start_directory):
     all_names_in_dir = listdir(start_directory)
     for name_obj in all_names_in_dir:
-        name_obj_full = start_directory+'\\'+name_obj
+        name_obj_full = join(start_directory, name_obj)
         if isfile(name_obj_full):
             file_size = getsize(name_obj_full)
             if data_files.get((name_obj, file_size)):
