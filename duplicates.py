@@ -1,6 +1,7 @@
-from os import listdir
-from os.path import getsize, isfile, isdir, abspath, join
+from os import listdir, walk
+from os.path import getsize, isfile, isdir, abspath, join, basename
 import argparse
+from collections import defaultdict
 
 MAX_COUNT_FILES = 1
 
@@ -17,20 +18,14 @@ def parse_dir_arg():
     return namespace.dirpath
 
 
-def scran_dir(data_files, start_directory):
-    all_names_in_dir = listdir(start_directory)
-    for name_obj in all_names_in_dir:
-        name_obj_full = join(start_directory, name_obj)
-        if isfile(name_obj_full):
-            file_size = getsize(name_obj_full)
-            if data_files.get((name_obj, file_size)):
-                data_files[(name_obj, file_size)].append(name_obj_full)
-            else:
-                data_files[(name_obj, file_size)] = []
-                data_files[(name_obj, file_size)].append(name_obj_full)
-        if isdir(name_obj_full):
-            scran_dir(data_files, name_obj_full)
-    return data_files
+def scan_dir(start_directory):
+    mydict = defaultdict(list)
+    stuct_of_dir = list(walk(start_directory))
+    for root, _, files in stuct_of_dir:
+        for f in files:
+            if isfile(join(root,f)):
+                mydict[(f,getsize(join(root,f)))].append(join(root,f))
+    return mydict
 
 
 def print_duplicates_info(data_duplicates):
@@ -50,7 +45,8 @@ def main():
     start_directory = parse_dir_arg()
     if not isdir(start_directory):
         exit('duplicates.py: error: directory not found')
-    data_files = scran_dir({}, start_directory)
+    data_files = scan_dir(start_directory)
+    print(data_files)
     data_duplicates = list(filter(
         lambda x: len(x[1]) > MAX_COUNT_FILES,
         data_files.items()
@@ -60,3 +56,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+    #scan_dir({},abspath('../'))
+    
