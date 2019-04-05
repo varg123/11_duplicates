@@ -19,25 +19,26 @@ def parse_dir_arg():
 
 
 def scan_dir(start_directory):
-    mydict = defaultdict(list)
-    stuct_of_dir = list(walk(start_directory))
-    for root, _, files in stuct_of_dir:
-        for f in files:
-            if isfile(join(root,f)):
-                mydict[(f,getsize(join(root,f)))].append(join(root,f))
-    return mydict
+    data_files = defaultdict(list)
+    struct_of_dir = list(walk(start_directory))
+    for root, _, paths in struct_of_dir:
+        for file in paths:
+            if isfile(join(root, file)):
+                size = getsize(join(root, file))
+                data_files[(file, size)].append(join(root, file))
+    return data_files
 
 
 def print_duplicates_info(data_duplicates):
     tmpl_about_file = '\nИмя: {}\nРазмер: {}'
-    for data_duplicate in data_duplicates:
+    for (name, size), paths in data_duplicates:
         info_about_file = tmpl_about_file.format(
-            data_duplicate[0][0],
-            str(data_duplicate[0][1])
+            name,
+            size
         )
         print(info_about_file)
         print('Расположение дубликатов:')
-        for path in data_duplicate[1]:
+        for path in paths:
             print(abspath(path))
 
 
@@ -46,7 +47,6 @@ def main():
     if not isdir(start_directory):
         exit('duplicates.py: error: directory not found')
     data_files = scan_dir(start_directory)
-    print(data_files)
     data_duplicates = list(filter(
         lambda x: len(x[1]) > MAX_COUNT_FILES,
         data_files.items()
@@ -56,5 +56,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    #scan_dir({},abspath('../'))
-    
