@@ -21,11 +21,12 @@ def parse_dir_arg():
 def scan_dir(start_directory):
     data_files = defaultdict(list)
     struct_of_dir = list(walk(start_directory))
-    for root, _, paths in struct_of_dir:
-        for file in paths:
-            if isfile(join(root, file)):
-                size = getsize(join(root, file))
-                data_files[(file, size)].append(join(root, file))
+    for root, _, file_names in struct_of_dir:
+        for file_name in file_names:
+            paths = join(root, file_name)
+            if isfile(paths):
+                size = getsize(paths)
+                data_files[(file_name, size)].append(paths)
     return data_files
 
 
